@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <link href="styles.css" rel="stylesheet" type="text/css" />
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <title>¡Dibujando líneas!</title>
+    </head>
+    <body style="background-color:rgb(145, 255, 195);"">
+        <center><h1>Graficacion de lineas en 2D, a continuacion ingrese el punto de inicio y el punto final:</h1>
+        <br><br><label>Coordenadas del punto de inicio:</label><br>
+        <label>X: </label><input type="text" id="init_x_cord">
+        <label>  Y: </label><input type="text" id="init_y_cord"><br><br>
+
+        <label>Coordenadas del punto final:</label><br>
+        <label>X: </label><input type="text" id="final_x_cord">
+        <label>  Y: </label><input type="text" id="final_y_cord"><br><br>
+        <button type="button" class="btn btn-primary btn-lg" onclick="Draw_all()">¡Pintar líneas! ✏📈</button>
+        <a href="index.html" class="btn btn-secondary btn-lg">⬅Regresar</a>
+        <br><br>
+        <h6>Algoritmo básico:</h6>
+        <canvas id="basic_canvas" width="250" height="250" style="border:2px solid #000000; background-color: azure;"></canvas>
+        <br><br>
+        <h6>Algoritmo DDA:</h6>
+        <canvas id="dda_canvas" width="250" height="250" style="border:2px solid #000000; background-color: antiquewhite;"></canvas>
+        <br><br>
+        <h6>Algoritmo de Bresenham:</h6>
+        <canvas id="bresenham_canvas" width="250" height="250" style="border:2px solid #000000; background-color: aliceblue;"></canvas>
+        </center>
+        <script type="text/javascript">
+            
+            function Basic(x0,y0,x1,y1){
+                var canvas = document.getElementById("basic_canvas");
+                var ctx = canvas.getContext("2d");
+                ctx.moveTo(x0, y0);
+                ctx.lineTo(x1, y1);
+                ctx.stroke();
+            }
+
+            function DDA(x0,y0,x1,y1){
+                var canvas = document.getElementById("dda_canvas");
+                var ctx = canvas.getContext("2d");
+                ctx.moveTo(x0, y0);
+                ctx.lineTo(x1, y1);
+                ctx.stroke();
+            }
+
+            function Bresenham(x0,y0,x1,y1){
+                var canvas = document.getElementById("bresenham_canvas");
+                var ctx = canvas.getContext("2d");
+                ctx.moveTo(x0, y0);
+                ctx.lineTo(x1, y1);
+                ctx.stroke();
+            }
+
+            function Draw_all(){
+                let init_x = parseInt(document.getElementById("init_x_cord").value);
+                let init_y = parseInt(document.getElementById("init_y_cord").value);
+                let finish_x = parseInt(document.getElementById("final_x_cord").value);
+                let finish_y = parseInt(document.getElementById("final_y_cord").value);
+                Basic(init_x,init_y,finish_x,finish_y);
+                DDA(init_x,init_y,finish_x,finish_y);
+                Bresenham(init_x,init_y,finish_x,finish_y);
+            }
+        </script>
+    </body>
+</html>

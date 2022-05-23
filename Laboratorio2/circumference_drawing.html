@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <link href="styles.css" rel="stylesheet" type="text/css" />
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <title>¡Dibujando circunferencias!</title>
+    </head>
+    <body style="background-color:rgb(255, 141, 141);"">
+        <center><h1>Graficacion de circunferencias en 2D, a continuacion ingrese el punto de inicio y el radio:</h1>
+            <br><br><label>Coordenadas del punto de inicio:</label><br>
+            <label>X: </label><input type="text" id="init_x_cord">
+            <label>  Y: </label><input type="text" id="init_y_cord"><br><br>
+    
+            <label>Ingrese el radio:</label><br>
+            <label>R: </label><input type="text" id="radius"><br><br>
+            <button type="button" class="btn btn-primary btn-lg" onclick="Draw_all()">¡Pintar circunferencias ✏🔘!</button>
+            <a href="index.html" class="btn btn-secondary btn-lg">⬅Regresar</a>
+            <br><br>
+            <h6>Algoritmo MidPoint:</h6>
+            <canvas id="midpoint_canvas" width="250" height="250" style="border:2px solid #000000; background-color: azure;"></canvas>
+            <br><br>
+            <h6>Algoritmo de Bresenham:</h6>
+            <canvas id="bresenham_canvas" width="250" height="250" style="border:2px solid #000000; background-color: aliceblue;"></canvas>
+            </center>
+            <script type="text/javascript">
+            
+                function MidPoint(x0,y0,r){
+                    var canvas = document.getElementById("midpoint_canvas");
+                    var ctx = canvas.getContext("2d");
+                    ctx.beginPath();
+                    ctx.arc(x0, y0, r, 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
+    
+                function Bresenham(x0,y0,r){
+                    var canvas = document.getElementById("bresenham_canvas");
+                    var ctx = canvas.getContext("2d");
+                    ctx.beginPath();
+                    ctx.arc(x0, y0, r, 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
+    
+                function Draw_all(){
+                    let init_x = parseInt(document.getElementById("init_x_cord").value);
+                    let init_y = parseInt(document.getElementById("init_y_cord").value);
+                    let radius = parseInt(document.getElementById("radius").value);
+                    MidPoint(init_x,init_y,radius);
+                    Bresenham(init_x,init_y,radius);
+                }
+            </script>
+    </body>
+</html>
