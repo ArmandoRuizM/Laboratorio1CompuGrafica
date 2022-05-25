@@ -29,27 +29,79 @@
         <script type="text/javascript">
             
             function Basic(x0,y0,x1,y1){
-                var canvas = document.getElementById("basic_canvas");
-                var ctx = canvas.getContext("2d");
-                ctx.moveTo(x0, y0);
-                ctx.lineTo(x1, y1);
-                ctx.stroke();
+                var canvas0 = document.getElementById("basic_canvas");
+                var ctx0 = canvas0.getContext("2d");
+                let m = -(y1-y0)/(x1-x0);
+                let i = x0;
+                let yi = y0;
+                while(i <= x1){
+                    xi = i;
+                    ctx0.beginPath(); // Iniciar trazo
+                    ctx0.arc(xi, Math.round(yi), 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                    ctx0.fill(); // Terminar trazo
+                    yi = yi-m;
+                    i=i+1;
+                    }
             }
 
             function DDA(x0,y0,x1,y1){
-                var canvas = document.getElementById("dda_canvas");
-                var ctx = canvas.getContext("2d");
-                ctx.moveTo(x0, y0);
-                ctx.lineTo(x1, y1);
-                ctx.stroke();
+                var canvas1 = document.getElementById("dda_canvas");
+                var ctx1 = canvas1.getContext("2d");
+                let dy = Math.abs(y1 - y0);
+                let dx = Math.abs(x1 - x0);
+                let step = -9999;
+                if (dx > dy){
+                    step = dx;
+                }
+                else{
+                    step = dy;
+                }
+                let xincr = dx/step;
+                let yincr = dy/step;
+                let xi = x0;
+                let yi = y0;
+                console.log("DDA:" + xincr, yincr)
+                for (i=0; i<=step; i++){
+                    console.log("DDA: " + xi, yi);
+                    ctx1.beginPath(); // Iniciar trazo
+                    ctx1.arc(Math.round(xi), Math.round(yi), 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                    ctx1.fill(); // Terminar trazo
+                    xi += xincr;
+                    yi += yincr; 
+                }
             }
 
             function Bresenham(x0,y0,x1,y1){
-                var canvas = document.getElementById("bresenham_canvas");
-                var ctx = canvas.getContext("2d");
-                ctx.moveTo(x0, y0);
-                ctx.lineTo(x1, y1);
-                ctx.stroke();
+                var canvas2 = document.getElementById("bresenham_canvas");
+                var ctx2 = canvas2.getContext("2d");
+                dy = Math.abs((y1 - y0));
+                dx = Math.abs((x1 - x0));
+                pk = 2*dy - dx;
+                console.log(dx,dy,pk);
+                console.log(x0,y0,x1,y1);
+                xi = x0;
+                yi = y0;
+                console.log(xi,yi,x1,y1);
+                for (i=0; i<=dx-1; i++){
+                    if (pk < 0){
+                        pk = pk + (2*dy);
+                        xi = xi + 1;
+                        ctx2.beginPath(); // Iniciar trazo
+                        ctx2.arc(xi, yi, 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx2.fill(); // Terminar trazo
+                        console.log(xi,yi);
+                    } else {
+                        pk = pk + ((2*dy) - (2*dx));
+                        xi = xi + 1;
+                        yi = yi + 1;
+                        ctx2.beginPath(); // Iniciar trazo
+                        ctx2.arc(xi, yi, 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx2.fill(); // Terminar trazo
+                        console.log(xi,yi);
+                    }
+                        
+                }
+                    
             }
 
             function Draw_all(){
@@ -57,6 +109,10 @@
                 let init_y = parseInt(document.getElementById("init_y_cord").value);
                 let finish_x = parseInt(document.getElementById("final_x_cord").value);
                 let finish_y = parseInt(document.getElementById("final_y_cord").value);
+                console.log(init_x);
+                console.log(init_y);
+                console.log(finish_x);
+                console.log(finish_y);
                 Basic(init_x,init_y,finish_x,finish_y);
                 DDA(init_x,init_y,finish_x,finish_y);
                 Bresenham(init_x,init_y,finish_x,finish_y);

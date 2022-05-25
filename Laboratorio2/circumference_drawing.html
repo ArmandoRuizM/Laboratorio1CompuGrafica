@@ -25,19 +25,92 @@
             <script type="text/javascript">
             
                 function MidPoint(x0,y0,r){
-                    var canvas = document.getElementById("midpoint_canvas");
-                    var ctx = canvas.getContext("2d");
-                    ctx.beginPath();
-                    ctx.arc(x0, y0, r, 0, 2 * Math.PI);
-                    ctx.stroke();
+                    var canvas0 = document.getElementById("midpoint_canvas");
+                    var ctx0 = canvas0.getContext("2d");
+                    let p = 1 - r;
+                    let xi = x0;
+                    let yi = y0-r;
+                    while (xi-x0 < y0 - yi - 1){
+                        if (p < 0){
+                            p = p + 2 * (xi-x0) + 1;
+                            xi = xi + 1;
+                        }
+                        else{
+                            p = p - 2 * (y0-yi) + 2 * (xi-x0);
+                            xi = xi + 1;
+                            yi = yi + 1;
+                        }
+                        ctx0.beginPath(); // Iniciar trazo
+                        ctx0.arc(xi, yi, 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx0.fill(); // Terminar trazo
+                        ctx0.beginPath(); // Iniciar trazo
+                        ctx0.arc(xi-2*(xi-x0), yi, 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx0.fill(); // Terminar trazo
+                        ctx0.beginPath(); // Iniciar trazo
+                        ctx0.arc(xi-2*(xi-x0), yi + 2*(y0-yi), 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx0.fill(); // Terminar trazo
+                        ctx0.beginPath(); // Iniciar trazo
+                        ctx0.arc(xi, yi + 2*(y0-yi), 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx0.fill(); // Terminar trazo
+                        ctx0.beginPath(); // Iniciar trazo
+                        ctx0.arc(x0+(y0-yi), y0 - (xi-x0), 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx0.fill(); // Terminar trazo
+                        ctx0.beginPath(); // Iniciar trazo
+                        ctx0.arc(x0-(y0-yi), y0 - (xi-x0), 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx0.fill(); // Terminar trazo
+                        ctx0.beginPath(); // Iniciar trazo
+                        ctx0.arc(x0-(y0-yi), y0 + (xi-x0), 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx0.fill(); // Terminar trazo
+                        ctx0.beginPath(); // Iniciar trazo
+                        ctx0.arc(x0+(y0-yi), y0 + (xi-x0), 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx0.fill(); // Terminar trazo
+                        
+                    }
+                        
                 }
     
                 function Bresenham(x0,y0,r){
-                    var canvas = document.getElementById("bresenham_canvas");
-                    var ctx = canvas.getContext("2d");
-                    ctx.beginPath();
-                    ctx.arc(x0, y0, r, 0, 2 * Math.PI);
-                    ctx.stroke();
+                    var canvas1 = document.getElementById("bresenham_canvas");
+                    var ctx1 = canvas1.getContext("2d");
+                    let xi = x0;
+                    let yi = y0 - r;
+                    let des = 3 - (2 * r);
+                    while (xi - x0 < y0 - yi - 1){
+                        xi = xi + 1;
+                        if (des < 0){
+                            des = des + 4*(xi-x0) + 6;
+                        }
+                        else{
+                            des = des + 4*((xi-x0) - (y0-yi)) + 10;
+                            yi = yi + 1;
+                        }
+                        ctx1.beginPath(); // Iniciar trazo
+                        ctx1.arc(xi, yi, 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx1.fill(); // Terminar trazo
+                        ctx1.beginPath(); // Iniciar trazo
+                        ctx1.arc(xi-2*(xi-x0), yi, 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx1.fill(); // Terminar trazo
+                        ctx1.beginPath(); // Iniciar trazo
+                        ctx1.arc(xi-2*(xi-x0), yi + 2*(y0-yi), 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx1.fill(); // Terminar trazo
+                        ctx1.beginPath(); // Iniciar trazo
+                        ctx1.arc(xi, yi + 2*(y0-yi), 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx1.fill(); // Terminar trazo
+                        ctx1.beginPath(); // Iniciar trazo
+                        ctx1.arc(x0+(y0-yi), y0 - (xi-x0), 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx1.fill(); // Terminar trazo
+                        ctx1.beginPath(); // Iniciar trazo
+                        ctx1.arc(x0-(y0-yi), y0 - (xi-x0), 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx1.fill(); // Terminar trazo
+                        ctx1.beginPath(); // Iniciar trazo
+                        ctx1.arc(x0-(y0-yi), y0 + (xi-x0), 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx1.fill(); // Terminar trazo
+                        ctx1.beginPath(); // Iniciar trazo
+                        ctx1.arc(x0+(y0-yi), y0 + (xi-x0), 1, 0, Math.PI * 2, true); // Dibujar un punto usando la funcion arc
+                        ctx1.fill(); // Terminar trazo
+                    }
+                        
+                            
                 }
     
                 function Draw_all(){
