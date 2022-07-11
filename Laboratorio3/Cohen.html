@@ -7,5 +7,149 @@
     </head>
     <body style="background-color:rgb(145, 255, 195);"">
         <center><h1>Algoritmo de recorte con Cohen-Sutherland:</h1>
-    </body>
+                <h2>Ingrese los puntos de cada recta</h2>
+                <label>Abra la consola para ver los resultados</label>
+                <br><br><label>Coordenadas del punto de inicio:</label><br>
+                <label>X: </label><input type="text" id="init_x_cord">
+                <label>  Y: </label><input type="text" id="init_y_cord"><br><br>
+        
+                <label>Coordenadas del punto final:</label><br>
+                <label>X: </label><input type="text" id="final_x_cord">
+                <label>  Y: </label><input type="text" id="final_y_cord"><br><br>
+                <button type="button" class="btn btn-primary btn-lg" onclick="calculo()">Calcular recorte! ✏📈</button>
+                <a href="index.html" class="btn btn-secondary btn-lg">⬅Regresar</a>
+
+
+                
+                <script>
+                    // Definiendo regiones por codigo
+                    const INSIDE = 0; // 0000
+                    const LEFT = 1; // 0001
+                    const RIGHT = 2; // 0010
+                    const BOTTOM = 4; // 0100
+                    const TOP = 8; // 1000
+                    
+                    // Definiendo x_max, y_max and x_min, y_min para
+                    // el rectangulo.
+                    const x_max = 10;
+                    const y_max = 8;
+                    const x_min = 4;
+                    const y_min = 4;
+                    
+                    // funcion para determinar la region de codigo de un punto(x, y)
+                    function computeCode(x, y)
+                    {
+                        // Se inicializa como si estuviera adentro
+                        let code = INSIDE;
+                    
+                        if (x < x_min) //Izquierda
+                            code |= LEFT;
+                        else if (x > x_max) //Derecha
+                            code |= RIGHT;
+                        if (y < y_min) // Abajo
+                            code |= BOTTOM;
+                        else if (y > y_max) // Arriba
+                            code |= TOP;
+                    
+                        return code;
+                    }
+                    
+                    // Aqui se implrmenta el algoritmo
+                    // Se le hace Clipping a una linea desde P1 = (x2, y2) hasta  P2 = (x2, y2)
+                    function cohenSutherlandClip(x1, y1, x2, y2)
+                    {
+                        
+                        let code1 = computeCode(x1, y1);
+                        let code2 = computeCode(x2, y2);
+                    
+                    
+                        let accept = false;
+                    
+                        while (true) {
+                            if ((code1 == 0) && (code2 == 0)) {
+                                // Si ambas puntas estan dentro del rectangulo
+                                accept = true;
+                                break;
+                            }
+                            else if (code1 & code2) {
+                                // Si ambas puntas estan dentro del rectangulo,
+                                // en la misma region
+                                break;
+                            }
+                            else {
+                                // Algun segmento de la linea esta dentro del
+                                // rectangulo
+                                let code_out;
+                                let x, y;
+                    
+                                // Al menos una punta esta afuera del rectangulo.
+                                if (code1 != 0)
+                                    code_out = code1;
+                                else
+                                    code_out = code2;
+                    
+                                // Hallar el punto de interseccion
+                                // Se hace uso de las formulas 
+                                // y = y1 + pendiente * (x - x1),
+                                // x = x1 + (1 / pendiente) * (y - y1)
+                                if (code_out & TOP) {
+                                    // El punto esta por encima
+                                    x = x1 + (x2 - x1) * (y_max - y1) / (y2 - y1);
+                                    y = y_max;
+                                }
+                                else if (code_out & BOTTOM) {
+                                    // El punto esta por debajo
+                                    x = x1 + (x2 - x1) * (y_min - y1) / (y2 - y1);
+                                    y = y_min;
+                                }
+                                else if (code_out & RIGHT) {
+                                    // El punto esta por la derecha
+                                    y = y1 + (y2 - y1) * (x_max - x1) / (x2 - x1);
+                                    x = x_max;
+                                }
+                                else if (code_out & LEFT) {
+                                    // El punto esta por la izquierda
+                                    y = y1 + (y2 - y1) * (x_min - x1) / (x2 - x1);
+                                    x = x_min;
+                                }
+                    
+                                // Remplazamos el punto por fuera por 
+                                //el punto hallado
+                                if (code_out == code1) {
+                                    x1 = x;
+                                    y1 = y;
+                                    code1 = computeCode(x1, y1);
+                                }
+                                else {
+                                    x2 = x;
+                                    y2 = y;
+                                    code2 = computeCode(x2, y2);
+                                }
+                            }
+                        }
+                        if (accept) {
+                            console.log("Linea aceptada desde", x1, ",", y1, "hasta", x2, ",", y2);
+                            
+                        }
+                        else
+                            console.log("Line rechazada");
+                    }
+
+                    function calculo(){
+                    let init_x = parseInt(document.getElementById("init_x_cord").value);
+                    let init_y = parseInt(document.getElementById("init_y_cord").value);
+                    let finish_x = parseInt(document.getElementById("final_x_cord").value);
+                    let finish_y = parseInt(document.getElementById("final_y_cord").value);
+                    console.log(init_x);
+                    console.log(init_y);
+                    console.log(finish_x);
+                    console.log(finish_y);
+                    cohenSutherlandClip(init_x,init_y,finish_x,finish_y);
+                    }
+                </script>
 </html>
+
+
+
+
+
