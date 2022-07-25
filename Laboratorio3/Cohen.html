@@ -3,12 +3,13 @@
         <link href="styles.css" rel="stylesheet" type="text/css" />
         <!-- CSS only -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-        <title>¡Dibujando líneas!</title>
+        <title>¡Recorte usando Cohen-Sutherland!</title>
     </head>
     <body style="background-color:rgb(145, 255, 195);"">
-        <center><h1>Algoritmo de recorte con Cohen-Sutherland:</h1>
+        <center><h1>Algoritmo de recorte con Cohen-Sutherland, la pantalla tiene unas dimensiones de 500X500 y el viewport
+            esta definido por el p1=(100,100), p2=(400,100), p3=(100,400), p4=(400,400). 
+            A continuacion ingrese el punto de inicio y final de la linea a recortar:</h1>
                 <h2>Ingrese los puntos de cada recta</h2>
-                <label>Abra la consola para ver los resultados</label>
                 <br><br><label>Coordenadas del punto de inicio:</label><br>
                 <label>X: </label><input type="text" id="init_x_cord">
                 <label>  Y: </label><input type="text" id="init_y_cord"><br><br>
@@ -16,12 +17,81 @@
                 <label>Coordenadas del punto final:</label><br>
                 <label>X: </label><input type="text" id="final_x_cord">
                 <label>  Y: </label><input type="text" id="final_y_cord"><br><br>
+                <label> Podra ser capaz de ver las Coordenadas de la linea tras el recorte en la consola, si no fue aceptada vera el mensaje Linea
+                    rechazada
+                </label>
                 <button type="button" class="btn btn-primary btn-lg" onclick="calculo()">Calcular recorte! ✏📈</button>
                 <a href="index.html" class="btn btn-secondary btn-lg">⬅Regresar</a>
-
+                <br><br>
+                <h6>Pantalla pre-recorte:</h6>
+                <canvas id="pre_canvas" width="500" height="500" style="border:2px solid #000000; background-color: azure;"></canvas>
+                <script>
+                    var canvas = document.getElementById("pre_canvas");
+                    var ctx = canvas.getContext("2d");
+                    ctx.strokeStyle = '#000099'
+                    ctx.lineWidth = 5;
+                    ctx.moveTo(100, 400);
+                    ctx.lineTo(400, 400);
+                    ctx.moveTo(400, 400);
+                    ctx.lineTo(400, 100);
+                    ctx.moveTo(400, 100);
+                    ctx.lineTo(100, 100);
+                    ctx.moveTo(100, 100);
+                    ctx.lineTo(100, 400);
+                    ctx.stroke();
+                    </script>
+                <br><br>
+                <h6>Pantalla después del recorte con Cohen-Sutherland:</h6>
+                <canvas id="post_canvas" width="500" height="500" style="border:2px solid #000000; background-color: antiquewhite;"></canvas>
+                <script>
+                    var canvas = document.getElementById("post_canvas");
+                    var ctx = canvas.getContext("2d");
+                    ctx.strokeStyle = '#000099'
+                    ctx.lineWidth = 5;
+                    ctx.moveTo(100, 400);
+                    ctx.lineTo(400, 400);
+                    ctx.moveTo(400, 400);
+                    ctx.lineTo(400, 100);
+                    ctx.moveTo(400, 100);
+                    ctx.lineTo(100, 100);
+                    ctx.moveTo(100, 100);
+                    ctx.lineTo(100, 400);
+                    ctx.stroke();
+                    </script>
+                
 
                 
                 <script>
+                    var polyCoordinates = [];
+
+
+                    function Draw_pre(x0,y0,x1,y1){
+                    var canvasPre = document.getElementById("pre_canvas");
+                    var ctxPre = canvasPre.getContext("2d");
+                    ctxPre.strokeStyle = '#fc0303'
+                    ctxPre.lineWidth = 1;
+                    ctxPre.moveTo(x0, y0);
+                    ctxPre.lineTo(x1, y1);
+                    ctxPre.stroke();
+                    }
+
+                    function Draw_post(x0,y0,x1,y1) {
+                    x = 100;
+                    y = 100;
+                    polyCoordinates[0] = { x, y };
+                    x = 400;
+                    y = 100;
+                    polyCoordinates[1] = { x, y };
+                    x = 400;
+                    y = 400;
+                    polyCoordinates[2] = { x, y };
+                    x = 100;
+                    y = 400;
+                    polyCoordinates[3] = { x, y };
+                    cohenSutherlandClip(x0, y0, x1, y1);
+                }
+    
+
                     // Definiendo regiones por codigo
                     const INSIDE = 0; // 0000
                     const LEFT = 1; // 0001
@@ -31,10 +101,10 @@
                     
                     // Definiendo x_max, y_max and x_min, y_min para
                     // el rectangulo.
-                    const x_max = 10;
-                    const y_max = 8;
-                    const x_min = 4;
-                    const y_min = 4;
+                    const x_max = 400;
+                    const y_max = 400;
+                    const x_min = 100;
+                    const y_min = 100;
                     
                     // funcion para determinar la region de codigo de un punto(x, y)
                     function computeCode(x, y)
@@ -129,7 +199,13 @@
                         }
                         if (accept) {
                             console.log("Linea aceptada desde", x1, ",", y1, "hasta", x2, ",", y2);
-                            
+                            var canvasPost = document.getElementById("post_canvas");
+                            var ctxPost = canvasPost.getContext("2d");
+                            ctxPost.strokeStyle = '#078a00'
+                            ctxPost.lineWidth = 1;
+                            ctxPost.moveTo(x1, y1);
+                            ctxPost.lineTo(x2, y2);
+                            ctxPost.stroke();
                         }
                         else
                             console.log("Linea rechazada");
@@ -144,11 +220,11 @@
                     console.log(init_y);
                     console.log(finish_x);
                     console.log(finish_y);
-                    cohenSutherlandClip(init_x,init_y,finish_x,finish_y);
+                    Draw_pre(init_x,init_y,finish_x,finish_y);
+                    Draw_post(init_x,init_y,finish_x,finish_y);
                     }
                 </script>
 </html>
-
 
 
 
