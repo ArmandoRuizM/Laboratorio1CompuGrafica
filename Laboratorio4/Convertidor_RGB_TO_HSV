@@ -1,0 +1,42 @@
+#Convertidor espacio de color RBG a HSV
+#Por: Mateo Obando, Armando Ruiz, Daniel Arango
+
+def convertidor(r,g,b):
+    #Se dividen los valores de r,g y b por 255
+    r = r/255
+    g = g/255
+    b = b/255
+
+    #Se calculan cmax, cmin y diff
+    cmax = max(r,g,b)
+    cmin = min(r,g,b)
+    diff = cmax-cmin
+
+    #Calculo del tinte
+    hue=0
+
+    if(cmax == 0 and cmin == 0):
+        hue = 0
+    elif(cmax == r):
+        hue = (60*((g-b)/diff)+360)%360
+    elif(cmax == g):
+        hue = (60*((b-r)/diff)+120)%360
+    elif(cmax == b):
+        hue = (60*((r-g)/diff)+240)%360    
+
+    #Calculo de la saturacion
+    sat = 0
+
+    if(cmax == 0):
+        sat = 0
+    else:
+        sat = (diff/cmax)*100
+
+    #Calculo del valor
+
+    val = cmax*100
+
+    return hue,sat,val
+
+
+print(convertidor(129,88,47))
